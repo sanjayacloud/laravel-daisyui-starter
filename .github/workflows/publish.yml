@@ -1,0 +1,27 @@
+name: Publish to Packagist
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Install Dependencies
+        run: composer install --no-dev --no-scripts --no-progress --prefer-dist
+
+      - name: Publish to Packagist
+        run: |
+          composer config --no-plugins allow-plugins.pestphp/pest-plugin true
+          composer config --no-plugins allow-plugins.ergebnis/composer-normalize true
+          composer publish
+        env:
+          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
