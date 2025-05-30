@@ -3,6 +3,7 @@
 namespace Sanjaya\LaravelDaisyuiStarter;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Artisan;
 
 class LaravelDaisyuiStarterServiceProvider extends ServiceProvider
 {
@@ -26,12 +27,13 @@ class LaravelDaisyuiStarterServiceProvider extends ServiceProvider
 
             $this->publishes([
                 __DIR__.'/../resources/css' => resource_path('css'),
-            ], 'assets');
-
-            $this->publishes([
                 __DIR__.'/../tailwind.config.js' => base_path('tailwind.config.js'),
                 __DIR__.'/../postcss.config.js' => base_path('postcss.config.js'),
-            ], 'config');
+            ], 'assets');
+
+            $this->commands([
+                Console\InstallCommand::class,
+            ]);
         }
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-daisyui-starter');

@@ -12,6 +12,7 @@ A beautiful Laravel starter kit with DaisyUI integration, providing a modern and
 - 🎯 Multiple theme options
 - 🚀 Easy to customize
 - 📦 Simple installation
+- 🔐 Authentication with Laravel Breeze
 
 ## Requirements
 
@@ -21,39 +22,35 @@ A beautiful Laravel starter kit with DaisyUI integration, providing a modern and
 
 ## Installation
 
-1. You can install the package via composer:
+1. Create a new Laravel project:
+```bash
+laravel new my-project
+cd my-project
+```
 
+2. Install the package via composer:
 ```bash
 composer require sanjaya/laravel-daisyui-starter:dev-main
 ```
 
-2. After installing the package, publish the assets. You can publish everything at once:
-
+3. Run the installation command:
 ```bash
-php artisan vendor:publish --provider="Sanjaya\LaravelDaisyuiStarter\LaravelDaisyuiStarterServiceProvider"
+php artisan daisyui-starter:install
 ```
 
-Or you can publish items separately:
+This will:
+- Install Laravel Breeze (if not already installed)
+- Publish the package assets and configuration
+- Install required NPM packages
+- Configure Tailwind CSS with DaisyUI
+- Build the assets
 
+4. Start your development server:
 ```bash
-# Publish only the config file
-php artisan vendor:publish --provider="Sanjaya\LaravelDaisyuiStarter\LaravelDaisyuiStarterServiceProvider" --tag=config
-
-# Publish only the views
-php artisan vendor:publish --provider="Sanjaya\LaravelDaisyuiStarter\LaravelDaisyuiStarterServiceProvider" --tag=views
-
-# Publish only the assets (CSS)
-php artisan vendor:publish --provider="Sanjaya\LaravelDaisyuiStarter\LaravelDaisyuiStarterServiceProvider" --tag=assets
+php artisan serve
 ```
 
-3. Install the required NPM packages:
-
-```bash
-npm install daisyui@latest
-```
-
-4. Compile your assets:
-
+5. In a separate terminal, start the Vite development server:
 ```bash
 npm run dev
 ```
@@ -104,6 +101,15 @@ After installation, you can use the included Blade components in your views:
     </x-slot>
 </x-laravel-daisyui-starter::layout>
 ```
+
+### Authentication
+
+The package integrates with Laravel Breeze for authentication. All auth views are styled with DaisyUI components. Available routes:
+
+- Login: `/login`
+- Register: `/register`
+- Password Reset: `/forgot-password`
+- Profile: `/profile`
 
 ## Available Themes
 

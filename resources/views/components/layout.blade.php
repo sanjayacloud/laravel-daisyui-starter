@@ -30,7 +30,7 @@
                     </label>
                 </div>
                 <div class="flex-1">
-                    <a class="btn btn-ghost text-xl">{{ config('app.name', 'Laravel') }}</a>
+                    <a href="/" class="btn btn-ghost text-xl">{{ config('app.name', 'Laravel') }}</a>
                 </div>
                 <div class="flex-none">
                     @if(config('laravel-daisyui-starter.navigation.show_dark_mode_toggle'))
@@ -40,30 +40,19 @@
                             <svg class="swap-off fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/></svg>
                         </label>
                     @endif
-
-                    @if(config('laravel-daisyui-starter.navigation.show_user_menu'))
-                        <div class="dropdown dropdown-end">
-                            <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                                <div class="w-10 rounded-full">
-                                    <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name ?? 'User' }}" />
-                                </div>
-                            </label>
-                            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                                <li><a href="{{ route('profile.edit') }}">Profile</a></li>
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="w-full text-left">Logout</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    @endif
                 </div>
             </div>
 
             <!-- Main content -->
             <main class="flex-1 p-4">
+                @if (isset($header))
+                    <div class="mb-4">
+                        <h2 class="text-xl font-semibold leading-tight">
+                            {{ $header }}
+                        </h2>
+                    </div>
+                @endif
+
                 {{ $slot }}
             </main>
 
@@ -82,18 +71,14 @@
             <aside class="bg-base-200 w-80">
                 <div class="p-4">
                     <ul class="menu menu-lg">
-                        <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            Dashboard
-                        </a></li>
-                        <li><a href="{{ route('profile.edit') }}" class="{{ request()->routeIs('profile.edit') ? 'active' : '' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            Profile
-                        </a></li>
+                        <li>
+                            <a href="/" class="{{ request()->is('/') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                                Home
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </aside>
