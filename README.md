@@ -1,3 +1,5 @@
+# !!!!!!! This package is still in testing mode. It's not yet ready to use. !!!!!!!!!!!!
+
 # Laravel DaisyUI Starter Kit
 
 A beautiful Laravel starter kit with DaisyUI integration, providing a modern and responsive UI framework for your Laravel applications.
