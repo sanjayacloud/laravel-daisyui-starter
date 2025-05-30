@@ -2,17 +2,18 @@
 
 # Laravel DaisyUI Starter Kit
 
-A beautiful Laravel starter kit with DaisyUI integration, providing a modern and responsive UI framework for your Laravel applications.
+A beautiful Laravel starter kit with DaisyUI integration, providing a modern and responsive UI framework for your Laravel applications. Built with Tailwind CSS v4 and the latest DaisyUI.
 
 ## Features
 
 - 🎨 DaisyUI components integration
 - 🌓 Dark mode support
 - 📱 Responsive design
-- 🎯 Multiple theme options
+- 🎯 CSS-first theme configuration
 - 🚀 Easy to customize
 - 📦 Simple installation
 - 🔐 Authentication with Laravel Breeze
+- ⚡ Tailwind CSS v4 integration
 
 ## Requirements
 
@@ -40,9 +41,10 @@ php artisan daisyui-starter:install
 
 This will:
 - Install Laravel Breeze (if not already installed)
-- Publish the package assets and configuration
-- Install required NPM packages
-- Configure Tailwind CSS with DaisyUI
+- Publish the package assets
+- Install required NPM packages (Tailwind CSS v4 and DaisyUI)
+- Configure Vite with Tailwind CSS
+- Set up the CSS configuration
 - Build the assets
 
 4. Start your development server:
@@ -55,51 +57,77 @@ php artisan serve
 npm run dev
 ```
 
-## Configuration
+## Theme Configuration
 
-The package configuration file will be published at `config/laravel-daisyui-starter.php`. You can modify the following options:
+Themes are now configured directly in your CSS using CSS variables, following Tailwind CSS v4's CSS-first approach. The configuration is located in `resources/css/app.css`:
 
-- Theme selection
-- Navigation settings
-- Layout preferences
+```css
+@layer theme {
+    :root {
+        --theme: "light";
+        --color-primary: oklch(0.6569 0.196 275.75);
+        --color-secondary: oklch(0.7176 0.158 342.55);
+        --color-accent: oklch(0.7059 0.169 183.61);
+        /* ... other color variables ... */
+    }
 
-### Available Configuration Options
+    [data-theme="dark"] {
+        --theme: "dark";
+        --color-base-100: oklch(0.2 0 0);
+    }
+}
+```
+
+### Customizing Colors
+
+To customize your theme colors, modify the CSS variables in `resources/css/app.css`. Available color variables:
+
+- `--color-primary`: Main brand color
+- `--color-secondary`: Secondary brand color
+- `--color-accent`: Accent color
+- `--color-neutral`: Neutral color
+- `--color-base-100`: Background color
+- `--color-info`: Information color
+- `--color-success`: Success color
+- `--color-warning`: Warning color
+- `--color-error`: Error color
+
+### Switching Themes
+
+To switch themes in your Blade templates:
+
+```html
+<html data-theme="light">
+    <!-- For light theme -->
+</html>
+
+<!-- OR -->
+
+<html data-theme="dark">
+    <!-- For dark theme -->
+</html>
+```
+
+For dynamic theme switching:
 
 ```php
-return [
-    // Default theme setting
-    'theme' => env('DAISYUI_THEME', 'light'),
-
-    // Navigation configuration
-    'navigation' => [
-        'show_user_menu' => true,
-        'show_dark_mode_toggle' => true,
-    ],
-
-    // Layout configuration
-    'layout' => [
-        'footer_text' => '© ' . date('Y') . ' Your Company. All rights reserved.',
-        'show_footer' => true,
-    ],
-];
+<html data-theme="{{ $theme }}">
+    <!-- Your content -->
+</html>
 ```
 
 ## Usage
 
-After installation, you can use the included Blade components in your views:
+After installation, you can use DaisyUI components in your views:
 
-```php
-<x-laravel-daisyui-starter::layout>
-    <x-slot name="header">
-        Your Header Content
-    </x-slot>
-
-    Your Main Content
-
-    <x-slot name="footer">
-        Your Footer Content
-    </x-slot>
-</x-laravel-daisyui-starter::layout>
+```html
+<button class="btn btn-primary">Primary Button</button>
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Card Title</h2>
+        <p>Card content</p>
+    </div>
+</div>
 ```
 
 ### Authentication
@@ -110,20 +138,6 @@ The package integrates with Laravel Breeze for authentication. All auth views ar
 - Register: `/register`
 - Password Reset: `/forgot-password`
 - Profile: `/profile`
-
-## Available Themes
-
-The package includes several DaisyUI themes:
-
-- Light (default)
-- Dark
-- Cupid
-- Corporate
-- Synthwave
-- Retro
-- Cyberpunk
-
-To change the theme, modify the `DAISYUI_THEME` value in your `.env` file or update the configuration file.
 
 ## Troubleshooting
 
@@ -138,6 +152,11 @@ composer require sanjaya/laravel-daisyui-starter:dev-main
 - Make sure you've published all assets
 - Clear your Laravel cache: `php artisan cache:clear`
 - Rebuild your npm assets: `npm run build`
+
+3. If themes are not applying:
+- Ensure the `data-theme` attribute is properly set on your HTML elements
+- Check that your CSS variables are correctly defined in `resources/css/app.css`
+- Make sure Vite is properly building your assets
 
 ## Contributing
 
