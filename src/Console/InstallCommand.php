@@ -94,16 +94,50 @@ class InstallCommand extends Command
 
         $packages = json_decode(file_get_contents(base_path('package.json')), true);
 
-        $packages['dependencies'] = array_merge([
-            'tailwindcss' => '^4.0.0',
-            '@tailwindcss/vite' => '^4.0.0',
-            'daisyui' => '^4.0.0',
-        ], $packages['dependencies'] ?? []);
+        $packages['devDependencies'] = array_merge([
+            'tailwindcss' => '^3.4.0',
+            'autoprefixer' => '^10.4.16',
+            'postcss' => '^8.4.32',
+            'daisyui' => '^4.4.19',
+        ], $packages['devDependencies'] ?? []);
 
         file_put_contents(
             base_path('package.json'),
             json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL
         );
+
+        // Create postcss.config.js with ES module syntax
+        $postcssConfig = <<<'JS'
+export default {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+}
+JS;
+        file_put_contents(base_path('postcss.config.js'), $postcssConfig);
+
+        // Create tailwind.config.js with ES module syntax
+        $tailwindConfig = <<<'JS'
+/** @type {import('tailwindcss').Config} */
+import daisyui from 'daisyui';
+
+export default {
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [daisyui],
+    daisyui: {
+        themes: ["light", "dark"],
+    },
+}
+JS;
+        file_put_contents(base_path('tailwind.config.js'), $tailwindConfig);
 
         $this->updateViteConfig();
         $this->updateCssFile();
@@ -114,7 +148,6 @@ class InstallCommand extends Command
         $viteConfig = <<<'JS'
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
@@ -122,7 +155,6 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
-        tailwindcss(),
     ],
 });
 JS;
@@ -133,16 +165,12 @@ JS;
     protected function updateCssFile()
     {
         $cssContent = <<<'CSS'
-@import "tailwindcss";
-
-@layer theme {
-    :root {
-        --spacing: 0.25rem;
-    }
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* DaisyUI theme configuration */
-@layer theme {
+@layer base {
     :root {
         --theme: "light";
         --color-primary: oklch(0.6569 0.196 275.75);
@@ -170,16 +198,14 @@ CSS;
 
     protected function buildAssets()
     {
-        $commands = ['npm install', 'npm run build'];
-        
-        $process = Process::pipe($commands);
-        $process->run();
-
-        if (!$process->successful()) {
+        try {
+            Process::run('npm install');
+            Process::run('npm run build');
+        } catch (\Exception $e) {
             $this->error('Error running commands. Please run them manually:');
-            foreach ($commands as $command) {
-                $this->line('  - ' . $command);
-            }
+            $this->line('  - npm install');
+            $this->line('  - npm run build');
+            return;
         }
     }
 } 
