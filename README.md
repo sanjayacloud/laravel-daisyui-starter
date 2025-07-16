@@ -1,5 +1,3 @@
-# !!!!!!! This package is still in testing mode. It's not yet ready to use. !!!!!!!!!!!!
-
 # Laravel DaisyUI Starter Kit
 
 A beautiful Laravel starter kit with DaisyUI integration, providing a modern and responsive UI framework for your Laravel applications. Built with Tailwind CSS v4 and the latest DaisyUI.
@@ -30,30 +28,36 @@ laravel new my-project
 cd my-project
 ```
 
-2. Install the package via composer:
+2. Install Laravel Breeze:
 ```bash
-composer require sanjaya/laravel-daisyui-starter:dev-main
+composer require laravel/breeze --dev
+php artisan breeze:install
+```
+When prompted, select the "Blade with Alpine" option.
+
+3. Install the package via composer:
+```bash
+composer require sanjaya/laravel-daisyui-starter:v1.0
 ```
 
-3. Run the installation command:
+4. Run the installation command:
 ```bash
 php artisan daisyui-starter:install
 ```
 
 This will:
-- Install Laravel Breeze (if not already installed)
 - Publish the package assets and example pages
 - Install required NPM packages
 - Configure Vite with Tailwind CSS
 - Set up the theme configuration
 - Build the assets
 
-4. Start your development server:
+5. Start your development server:
 ```bash
 php artisan serve
 ```
 
-5. In a separate terminal, start the Vite development server:
+6. In a separate terminal, start the Vite development server:
 ```bash
 npm run dev
 ```
@@ -64,7 +68,7 @@ The package comes with pre-built example pages showcasing various DaisyUI compon
 
 ### Layout Structure
 
-The base layout (`resources/views/layouts/app.blade.php`) includes:
+The base layout (`resources/views/vendor/layouts/app.blade.php`) includes:
 - Responsive navigation bar
 - Theme switcher (light/dark mode)
 - User dropdown menu
@@ -79,7 +83,7 @@ To use the layout in your views:
 
 ### Dashboard Example
 
-The dashboard example (`resources/views/dashboard.blade.php`) demonstrates:
+The dashboard example (`resources/views/vendor/dashboard.blade.php`) demonstrates:
 
 1. **Stats Cards**:
 ```html
@@ -186,6 +190,14 @@ The dashboard example (`resources/views/dashboard.blade.php`) demonstrates:
 </div>
 ```
 
+## Screenshots
+
+### Dashboard
+![Dashboard](assets/dashboard.png)
+
+### Login Page
+![Login](assets/login.png)
+
 ## Theme Configuration
 
 Themes are now configured directly in your CSS using CSS variables, following Tailwind CSS v4's CSS-first approach. The configuration is located in `resources/css/app.css`:
@@ -287,13 +299,9 @@ composer require sanjaya/laravel-daisyui-starter:dev-main
 - Check that your CSS variables are correctly defined in `resources/css/app.css`
 - Make sure Vite is properly building your assets
 
-## Contributing
-
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
 ## Security
 
-If you discover any security related issues, please email sanjayaprasanna20@gmail.com instead of using the issue tracker.
+If you discover any security related issues, please create a issue using the issue tracker.
 
 ## License
 
